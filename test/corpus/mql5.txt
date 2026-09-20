@@ -12,3 +12,60 @@ input double c;
   (declaration (primitive_type) (identifier))
   (declaration (storage_class_specifier) (primitive_type) (identifier))
   (declaration (storage_class_specifier) (primitive_type) (identifier)))
+
+================================================================================
+sinput storage class
+================================================================================
+
+sinput bool InpLog = true;
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (declaration
+    (storage_class_specifier)
+    type: (primitive_type)
+    declarator: (init_declarator
+      declarator: (identifier)
+      value: (true))))
+
+================================================================================
+color and datetime literals
+================================================================================
+
+color myColor = C'255,0,0';
+datetime start = D'2024.01.01';
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (declaration
+    type: (type_identifier)
+    declarator: (init_declarator
+      declarator: (identifier)
+      value: (color_literal)))
+  (declaration
+    type: (type_identifier)
+    declarator: (init_declarator
+      declarator: (identifier)
+      value: (datetime_literal))))
+
+================================================================================
+interface declaration
+================================================================================
+
+interface IFoo {
+   void Bar();
+};
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (interface_specifier
+    name: (type_identifier)
+    body: (field_declaration_list
+      (field_declaration
+        type: (primitive_type)
+        declarator: (function_declarator
+          declarator: (field_identifier)
+          parameters: (parameter_list))))))

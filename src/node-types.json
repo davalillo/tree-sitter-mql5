@@ -108,6 +108,10 @@
         "named": true
       },
       {
+        "type": "color_literal",
+        "named": true
+      },
+      {
         "type": "compound_literal_expression",
         "named": true
       },
@@ -117,6 +121,10 @@
       },
       {
         "type": "conditional_expression",
+        "named": true
+      },
+      {
+        "type": "datetime_literal",
         "named": true
       },
       {
@@ -409,6 +417,10 @@
       },
       {
         "type": "enum_specifier",
+        "named": true
+      },
+      {
+        "type": "interface_specifier",
         "named": true
       },
       {
@@ -1939,6 +1951,10 @@
         "types": [
           {
             "type": "_declarator",
+            "named": true
+          },
+          {
+            "type": "gnu_asm_expression",
             "named": true
           },
           {
@@ -3586,6 +3602,62 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "interface_specifier",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "field_declaration_list",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "qualified_identifier",
+            "named": true
+          },
+          {
+            "type": "template_type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "attribute_declaration",
+          "named": true
+        },
+        {
+          "type": "base_class_clause",
+          "named": true
+        },
+        {
+          "type": "ms_declspec_modifier",
+          "named": true
+        },
+        {
+          "type": "virtual_specifier",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -7014,6 +7086,10 @@
     "named": false
   },
   {
+    "type": "__thread",
+    "named": false
+  },
+  {
     "type": "__unaligned",
     "named": false
   },
@@ -7082,6 +7158,10 @@
     "named": false
   },
   {
+    "type": "color_literal",
+    "named": true
+  },
+  {
     "type": "comment",
     "named": true
   },
@@ -7112,6 +7192,10 @@
   {
     "type": "continue",
     "named": false
+  },
+  {
+    "type": "datetime_literal",
+    "named": true
   },
   {
     "type": "decltype",
@@ -7191,6 +7275,10 @@
   },
   {
     "type": "input",
+    "named": false
+  },
+  {
+    "type": "interface",
     "named": false
   },
   {
@@ -7327,6 +7415,10 @@
   },
   {
     "type": "signed",
+    "named": false
+  },
+  {
+    "type": "sinput",
     "named": false
   },
   {
