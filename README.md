@@ -1,4 +1,13 @@
-# tree-sitter-mql5 (gortex fork)
+# tree-sitter-mql5
+
+> **Independently maintained since 2026.** This project began as a fork of
+> [mskelton/tree-sitter-mql5](https://github.com/mskelton/tree-sitter-mql5) (ISC),
+> which extends [tree-sitter-cpp](https://github.com/tree-sitter/tree-sitter-cpp)
+> with the MQL5 `input` storage class. Full git history is preserved. The
+> upstream has been dormant since 2023 (bot-only commits), so this repository
+> is the canonical home going forward; upstream is consulted only if it shows
+> human activity. Grammar-inspiration credits: see ACKNOWLEDGMENTS.md (in
+> progress) and the extension list below.
 
 Fork of [mskelton/tree-sitter-mql5](https://github.com/mskelton/tree-sitter-mql5)
 (ISC) maintained for [Gortex](https://github.com/davalillo/gortex). This fork
