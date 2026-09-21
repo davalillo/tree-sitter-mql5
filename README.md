@@ -10,6 +10,16 @@ class):
 - `interface_specifier` for MQL5 `interface` declarations
 - `color_literal` (`C'255,0,0'`) and `datetime_literal` (`D'2024.01.01'`) —
   MQL-native literals absent from C++
+- MQL primitive types: `string`, `datetime`, `color`, `uchar`, `ushort`,
+  `uint`, `ulong` redefined as `primitive_type` (upstream parses them as
+  `type_identifier`, indistinguishable from user classes)
+- `input_group` (`input group "Name"`) — its absence degraded every following
+  declaration into ERROR nodes in real-code audits
+- Parenthesized assignment `(a = b)` is a KNOWN LIMITATION of the pinned 2023
+  base (tree-sitter-c fcd1230): fixed upstream by f3559c6 + follow-ups, arriving
+  here with a full regeneration against a modern base
+
+The grammar targets MQL4, MQL5 and MQH (`.mq4`, `.mq5`, `.mqh`).
 
 ## Go usage
 
