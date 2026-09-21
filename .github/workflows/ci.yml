@@ -12,3 +12,35 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm test
+
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install tree-sitter CLI
+        run: npm install -g tree-sitter-cli@0.20.7
+      - name: Real-corpus regression
+        run: bash test/regression/run-regression.sh
+
+  go-bindings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: 'stable'
+      - name: Build Go binding
+        run: go build ./bindings/go
+      - name: Vet Go binding
+        run: go vet ./bindings/go
+
+  rust-bindings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Check Rust binding
+        run: cargo check
