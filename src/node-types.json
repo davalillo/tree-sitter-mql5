@@ -1954,10 +1954,6 @@
             "named": true
           },
           {
-            "type": "gnu_asm_expression",
-            "named": true
-          },
-          {
             "type": "init_declarator",
             "named": true
           },
@@ -3594,6 +3590,22 @@
           },
           {
             "type": "initializer_list",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "input_group",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string_literal",
             "named": true
           }
         ]
@@ -6186,6 +6198,10 @@
           "named": true
         },
         {
+          "type": "input_group",
+          "named": true
+        },
+        {
           "type": "labeled_statement",
           "named": true
         },
@@ -7062,10 +7078,6 @@
     "named": false
   },
   {
-    "type": "__thread",
-    "named": false
-  },
-  {
     "type": "__unaligned",
     "named": false
   },
@@ -7235,6 +7247,10 @@
   },
   {
     "type": "goto",
+    "named": false
+  },
+  {
+    "type": "group",
     "named": false
   },
   {

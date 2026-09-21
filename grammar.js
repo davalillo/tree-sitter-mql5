@@ -22,11 +22,66 @@ const CPP = require("tree-sitter-cpp/grammar")
 //   - stray semicolons in class bodies: `Ctor(void) {…};` — an empty
 //     member declaration is legal C++ but unmatched by the stock
 //     field_declaration_list (3 hits in the same EA).
+//   - stray semicolons in class bodies: `Ctor(void) {…};` — an empty
+//     member declaration is legal C++ but unmatched by the stock
+//     field_declaration_list (3 hits in the same EA).
+//   - MQL primitive types: `string`, `datetime`, `color`, `uchar`, `ushort`,
+//     `uint`, `ulong`. The stock C token list has none of them, so they
+//     parsed as type_identifier, indistinguishable from user-defined
+//     classes/typedefs downstream. Redefined as a superset of the tree-sitter-c
+//     0.20.3 token list.
+//   - input_group: `input group "Name"` (MQL5 build >= 1861, also accepted
+//     by the unified MQL4 compiler). The stock grammar has no rule for it:
+//     one occurrence degrades every following declaration into ERROR nodes
+//     (24 of 25 failing files in a 111-file real-code corpus audit).
+//   - parenthesized assignment `(a = b)`: KNOWN LIMITATION of the pinned
+//     2023 base (tree-sitter-c fcd1230 + tree-sitter-cpp 2c7aff4). Legal C++
+//     like `if ((x = f()) > 0)` parses with ERROR nodes (9 of 111 files in
+//     the real-code corpus audit). Fixed upstream by tree-sitter-c
+//     f3559c6 (PREC swap) plus follow-ups; porting the swap alone regresses
+//     the digraph corpus and does not fix the parse in this base. The fix
+//     arrives with a full regeneration against a modern tree-sitter-c/cpp.
+//     A corpus test documents the current ERROR behavior as a tripwire.
 module.exports = grammar(CPP, {
   name: "mql5",
   rules: {
     storage_class_specifier: ($, original) =>
       choice(original, "input", "sinput"),
+
+    _top_level_item: ($, original) => choice(original, $.input_group),
+
+    input_group: $ =>
+      seq("input", "group", field("name", $.string_literal)),
+
+    primitive_type: _ =>
+      token(choice(
+        // tree-sitter-c 0.20.3 token list (unchanged)
+        "bool",
+        "char",
+        "int",
+        "float",
+        "double",
+        "void",
+        "size_t",
+        "ssize_t",
+        "ptrdiff_t",
+        "intptr_t",
+        "uintptr_t",
+        "charptr_t",
+        "nullptr_t",
+        "max_align_t",
+        ...[8, 16, 32, 64].map(n => `int${n}_t`),
+        ...[8, 16, 32, 64].map(n => `uint${n}_t`),
+        ...[8, 16, 32, 64].map(n => `char${n}_t`),
+        // MQL-native primitive types
+        "string",
+        "datetime",
+        "color",
+        "uchar",
+        "ushort",
+        "uint",
+        "ulong",
+      )),
 
     interface_specifier: $ => seq(
       'interface',
