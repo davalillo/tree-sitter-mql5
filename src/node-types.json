@@ -316,6 +316,10 @@
         "named": true
       },
       {
+        "type": "declaration",
+        "named": true
+      },
+      {
         "type": "do_statement",
         "named": true
       },
@@ -1579,10 +1583,6 @@
           "named": true
         },
         {
-          "type": "declaration",
-          "named": true
-        },
-        {
           "type": "function_definition",
           "named": true
         },
@@ -2059,10 +2059,6 @@
         },
         {
           "type": "concept_definition",
-          "named": true
-        },
-        {
-          "type": "declaration",
           "named": true
         },
         {
@@ -4631,10 +4627,6 @@
           "named": true
         },
         {
-          "type": "declaration",
-          "named": true
-        },
-        {
           "type": "field_declaration",
           "named": true
         },
@@ -4755,10 +4747,6 @@
           "named": true
         },
         {
-          "type": "declaration",
-          "named": true
-        },
-        {
           "type": "function_definition",
           "named": true
         },
@@ -4847,10 +4835,6 @@
         },
         {
           "type": "concept_definition",
-          "named": true
-        },
-        {
-          "type": "declaration",
           "named": true
         },
         {
@@ -5042,10 +5026,6 @@
           "named": true
         },
         {
-          "type": "declaration",
-          "named": true
-        },
-        {
           "type": "field_declaration",
           "named": true
         },
@@ -5171,10 +5151,6 @@
         },
         {
           "type": "concept_definition",
-          "named": true
-        },
-        {
-          "type": "declaration",
           "named": true
         },
         {

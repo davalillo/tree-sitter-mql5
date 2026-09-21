@@ -1,17 +1,25 @@
-==========================================
+================================================================================
 input storage class
-==========================================
+================================================================================
 
 int a;
 input int b;
 input double c;
 
----
+--------------------------------------------------------------------------------
 
 (translation_unit
-  (declaration (primitive_type) (identifier))
-  (declaration (storage_class_specifier) (primitive_type) (identifier))
-  (declaration (storage_class_specifier) (primitive_type) (identifier)))
+  (declaration
+    (primitive_type)
+    (identifier))
+  (declaration
+    (storage_class_specifier)
+    (primitive_type)
+    (identifier))
+  (declaration
+    (storage_class_specifier)
+    (primitive_type)
+    (identifier)))
 
 ================================================================================
 sinput storage class
@@ -69,3 +77,65 @@ interface IFoo {
         declarator: (function_declarator
           declarator: (field_identifier)
           parameters: (parameter_list))))))
+
+================================================================================
+declaration as if/else consequence
+================================================================================
+
+void f() {
+   if (x == 0)
+      double v = 0;
+   else
+      v = 1;
+}
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (function_definition
+    type: (primitive_type)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list))
+    body: (compound_statement
+      (if_statement
+        condition: (condition_clause
+          value: (binary_expression
+            left: (identifier)
+            right: (number_literal)))
+        consequence: (declaration
+          type: (primitive_type)
+          declarator: (init_declarator
+            declarator: (identifier)
+            value: (number_literal)))
+        alternative: (else_clause
+          (expression_statement
+            (assignment_expression
+              left: (identifier)
+              right: (number_literal))))))))
+
+================================================================================
+stray semicolon after inline constructor body
+================================================================================
+
+class C {
+   C(void) { x = 0; };
+};
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (class_specifier
+    name: (type_identifier)
+    body: (field_declaration_list
+      (function_definition
+        declarator: (function_declarator
+          declarator: (identifier)
+          parameters: (parameter_list
+            (parameter_declaration
+              type: (primitive_type))))
+        body: (compound_statement
+          (expression_statement
+            (assignment_expression
+              left: (identifier)
+              right: (number_literal))))))))

@@ -14,6 +14,14 @@ const CPP = require("tree-sitter-cpp/grammar")
 //     showed they shatter surrounding declarations into ERROR nodes.
 //     Added to _expression_not_binary (chained over cpp's own override)
 //     so they parse wherever any expression is accepted.
+//   - declaration-as-statement: MQL4/5 code habitually writes a variable
+//     declaration as the un-braced consequence of if/else (`if (x == 0)
+//     double TComi = 0; else …`). Legal C++, but the C grammar excludes
+//     $.declaration from _non_case_statement; verified on a real 21k-line
+//     EA (37 contained ERROR nodes).
+//   - stray semicolons in class bodies: `Ctor(void) {…};` — an empty
+//     member declaration is legal C++ but unmatched by the stock
+//     field_declaration_list (3 hits in the same EA).
 module.exports = grammar(CPP, {
   name: "mql5",
   rules: {
@@ -38,6 +46,16 @@ module.exports = grammar(CPP, {
       original,
       $.color_literal,
       $.datetime_literal,
+    ),
+
+    _non_case_statement: ($, original) => choice(
+      original,
+      $.declaration,
+    ),
+
+    _field_declaration_list_item: ($, original) => choice(
+      original,
+      ';',
     ),
   },
 })
