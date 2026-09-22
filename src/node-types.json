@@ -539,6 +539,10 @@
           "named": true
         },
         {
+          "type": "export_specifier",
+          "named": true
+        },
+        {
           "type": "noexcept",
           "named": true
         },
@@ -3061,6 +3065,10 @@
         },
         {
           "type": "attribute_specifier",
+          "named": true
+        },
+        {
+          "type": "export_specifier",
           "named": true
         },
         {
@@ -7220,6 +7228,10 @@
   {
     "type": "explicit",
     "named": false
+  },
+  {
+    "type": "export_specifier",
+    "named": true
   },
   {
     "type": "extern",

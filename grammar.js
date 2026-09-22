@@ -51,7 +51,20 @@ module.exports = grammar(CPP, {
     _top_level_item: ($, original) => choice(original, $.input_group),
 
     input_group: $ =>
-      seq("input", "group", field("name", $.string_literal)),
+      seq("input", "group", field("name", $.string_literal), optional(";")),
+
+    // `void f() export { ... }` marks a function as exported from a library.
+    export_specifier: _ => "export",
+
+    // tree-sitter-cpp 2c7aff4 has no `_function_postfix` rule; the export
+    // specifier attaches right after a function declarator's parameter list
+    // via the `_function_declarator_seq` suffix hook (shared by
+    // function_declarator, function_field_declarator and
+    // abstract_function_declarator).
+    _function_declarator_seq: ($, original) => choice(
+      original,
+      prec.right(seq(original, $.export_specifier)),
+    ),
 
     primitive_type: _ =>
       token(choice(

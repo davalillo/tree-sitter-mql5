@@ -243,3 +243,74 @@ uchar u1; ushort u2; uint u3; ulong u4;
   (declaration
     type: (primitive_type)
     declarator: (identifier)))
+
+================================================================================
+exported library function
+================================================================================
+
+void f() export { }
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (function_definition
+    type: (primitive_type)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list)
+      (export_specifier))
+    body: (compound_statement)))
+
+================================================================================
+input group with trailing semicolon
+================================================================================
+
+input group "Risk";
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (input_group
+    name: (string_literal
+      (string_content))))
+
+================================================================================
+group remains usable as an identifier
+================================================================================
+
+void f() {
+   int group = 5;
+   group = group + 1;
+   if (group > 0) Print(group);
+}
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (function_definition
+    type: (primitive_type)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list))
+    body: (compound_statement
+      (declaration
+        type: (primitive_type)
+        declarator: (init_declarator
+          declarator: (identifier)
+          value: (number_literal)))
+      (expression_statement
+        (assignment_expression
+          left: (identifier)
+          right: (binary_expression
+            left: (identifier)
+            right: (number_literal))))
+      (if_statement
+        condition: (condition_clause
+          value: (binary_expression
+            left: (identifier)
+            right: (number_literal)))
+        consequence: (expression_statement
+          (call_expression
+            function: (identifier)
+            arguments: (argument_list
+              (identifier))))))))
