@@ -85,7 +85,7 @@ inspirado/copiado exige atribución: ver T6.
       verde y actualizarse), scanner C-only unificado para Node/Rust/Go,
       verificación de ABI/LANGUAGE_VERSION contra el runtime Go de gortex
       ANTES de mergear; `npm run regression` sin regresiones.
-      Status: pendiente
+      Status: COMPLETADA — base migrada a tree-sitter-cpp v0.23.4 + CLI 0.25.10 (ABI 15, dentro del rango [13,15] de go-tree-sitter v0.25.0 de gortex); grammar.js: override _type_specifier->type_specifier, override _non_case_statement eliminado (cubierto upstream; if/else extienden choice(statement, declaration)), input_group con prec.right; scanner.cc->scanner.c (símbolos mql5) y bindings Node/Rust/Go C-only sin scanner_stub.c; tree-sitter.json nuevo (external-files); corpus re-derivado 109/109, tripwire (a = b) verde; corpus real 111 ficheros 0 errores; npm devDeps git eliminadas (EALLOWGIT) + tree-sitter-cli ^0.25.10; verificación gortex: go build OK, tests mql 7/7. Commit f544042
 
 - [ ] T6 (opcional) Binding Node con napi-rs + binarios precompilados
       Inspiration: khayashi4337/tree-sitter-mql5
