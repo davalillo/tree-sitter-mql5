@@ -24,9 +24,10 @@ class):
   `type_identifier`, indistinguishable from user classes)
 - `input_group` (`input group "Name"`) — its absence degraded every following
   declaration into ERROR nodes in real-code audits
-- Parenthesized assignment `(a = b)` is a KNOWN LIMITATION of the pinned 2023
-  base (tree-sitter-c fcd1230): fixed upstream by f3559c6 + follow-ups, arriving
-  here with a full regeneration against a modern base
+- Parenthesized assignment `(a = b)` — resolved: the base migration to
+  tree-sitter-cpp v0.23.4 (CLI 0.25, ABI 15) brings the upstream fix; it now
+  parses as a clean `assignment_expression` (corpus tripwire: "parenthesized
+  assignment parses")
 
 The grammar targets MQL4, MQL5 and MQH (`.mq4`, `.mq5`, `.mqh`).
 
@@ -55,22 +56,22 @@ import "github.com/davalillo/tree-sitter-mql5/bindings/go"
 lang := sitter.NewLanguage(tree_sitter_mql5.Language())
 ```
 
-Note: the upstream external scanner (`src/scanner.cc`, C++ raw string
-literals) is intentionally not compiled — MQL5 has no raw string literals.
-`bindings/go/scanner_stub.c` satisfies the scanner symbols the generated
-parser references, keeping the Go build C-only.
+Note: the external scanner is C-only (`src/scanner.c`, from the tree-sitter-cpp
+v0.23.4 base, symbols renamed `tree_sitter_mql5_*`) and is compiled by every
+binding (Node, Rust, Go) — no C++ toolchain and no scanner stub are involved.
 
 ## Regenerating the parser
 
 ```
 npm install --allow-scripts   # tree-sitter-cli, tree-sitter-cpp (git deps)
-tree-sitter generate          # requires tree-sitter-cli 0.20.x-era DSL
+tree-sitter generate          # requires tree-sitter-cli 0.25.x (ABI 15)
 tree-sitter test
 ```
 
-The `tree-sitter-cpp` submodule (pinned) and a matching `tree-sitter-c`
-(circa July 2023, defines `_expression`) must be resolvable as
-`node_modules/tree-sitter-cpp` / `node_modules/tree-sitter-c`.
+The pinned `tree-sitter-cpp` submodule (v0.23.4) and a matching
+`tree-sitter-c` (v0.23.x, required by cpp 0.23.4's grammar.js) must be
+resolvable as `node_modules/tree-sitter-cpp` / `node_modules/tree-sitter-c`
+(symlinks; the submodule alone is enough for `tree-sitter-cpp`).
 
 Macro-expansion-only constructs (declarations that are only valid after
 `#define` expansion) intentionally remain ERROR nodes — same boundary the

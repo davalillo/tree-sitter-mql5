@@ -16,12 +16,10 @@ const CPP = require("tree-sitter-cpp/grammar")
 //     so they parse wherever any expression is accepted.
 //   - declaration-as-statement: MQL4/5 code habitually writes a variable
 //     declaration as the un-braced consequence of if/else (`if (x == 0)
-//     double TComi = 0; else …`). Legal C++, but the C grammar excludes
-//     $.declaration from _non_case_statement; verified on a real 21k-line
-//     EA (37 contained ERROR nodes).
-//   - stray semicolons in class bodies: `Ctor(void) {…};` — an empty
-//     member declaration is legal C++ but unmatched by the stock
-//     field_declaration_list (3 hits in the same EA).
+//     double TComi = 0; else …`). Legal C++; excluded by the old pinned C
+//     base (tree-sitter-c 0.20.3) and patched here via a _non_case_statement
+//     override. tree-sitter-c/cpp 0.23 covers labeled/unbraced declarations
+//     upstream, so the override was retired with the 0.23 migration.
 //   - stray semicolons in class bodies: `Ctor(void) {…};` — an empty
 //     member declaration is legal C++ but unmatched by the stock
 //     field_declaration_list (3 hits in the same EA).
@@ -34,14 +32,13 @@ const CPP = require("tree-sitter-cpp/grammar")
 //     by the unified MQL4 compiler). The stock grammar has no rule for it:
 //     one occurrence degrades every following declaration into ERROR nodes
 //     (24 of 25 failing files in a 111-file real-code corpus audit).
-//   - parenthesized assignment `(a = b)`: KNOWN LIMITATION of the pinned
-//     2023 base (tree-sitter-c fcd1230 + tree-sitter-cpp 2c7aff4). Legal C++
-//     like `if ((x = f()) > 0)` parses with ERROR nodes (9 of 111 files in
-//     the real-code corpus audit). Fixed upstream by tree-sitter-c
-//     f3559c6 (PREC swap) plus follow-ups; porting the swap alone regresses
-//     the digraph corpus and does not fix the parse in this base. The fix
-//     arrives with a full regeneration against a modern tree-sitter-c/cpp.
-//     A corpus test documents the current ERROR behavior as a tripwire.
+//   - parenthesized assignment `(a = b)`: was a KNOWN LIMITATION of the
+//     pinned 2023 base (tree-sitter-c fcd1230 + tree-sitter-cpp 2c7aff4):
+//     legal C++ like `if ((x = f()) > 0)` parsed with ERROR nodes (9 of 111
+//     files in the real-code corpus audit). A corpus test documented the
+//     ERROR behavior as a tripwire. Fixed upstream in tree-sitter-c
+//     (f3559c6 PREC swap plus follow-ups, shipped by 0.23) — the migration
+//     to tree-sitter-c/cpp 0.23 retired the tripwire.
 module.exports = grammar(CPP, {
   name: "mql5",
   rules: {
@@ -50,8 +47,11 @@ module.exports = grammar(CPP, {
 
     _top_level_item: ($, original) => choice(original, $.input_group),
 
+    // prec.right: with tree-sitter-cpp 0.23 a bare `;` is a valid empty
+    // top-level declaration, so the optional trailing `;` of input_group
+    // needs right associativity to attach to the rule instead.
     input_group: $ =>
-      seq("input", "group", field("name", $.string_literal), optional(";")),
+      prec.right(seq("input", "group", field("name", $.string_literal), optional(";"))),
 
     // `void f() export { ... }` marks a function as exported from a library.
     export_specifier: _ => "export",
@@ -101,7 +101,9 @@ module.exports = grammar(CPP, {
       $._class_declaration,
     ),
 
-    _type_specifier: ($, original) => choice(
+    // tree-sitter-cpp 0.23 promoted _type_specifier to the named node
+    // `type_specifier`, so the override key follows the rename.
+    type_specifier: ($, original) => choice(
       original,
       $.interface_specifier,
     ),
@@ -116,10 +118,25 @@ module.exports = grammar(CPP, {
       $.datetime_literal,
     ),
 
-    _non_case_statement: ($, original) => choice(
-      original,
-      $.declaration,
-    ),
+    // declaration-after-label (`label: int x;`): the old pinned base needed a
+    // _non_case_statement override for it; tree-sitter-c 0.23 covers labeled
+    // declarations upstream (labeled_statement accepts $.declaration
+    // directly), so that override was retired with the 0.23 migration.
+    //
+    // declaration-as-if/else-consequence remains an MQL4/5-specific idiom the
+    // stock grammars reject: C's if_statement/else_clause take $.statement,
+    // which excludes $.declaration. Extended here narrowly (instead of via
+    // the old blanket _non_case_statement override, which would now be
+    // ambiguous with 0.23's labeled_statement choice).
+    if_statement: $ => prec.right(seq(
+      'if',
+      optional('constexpr'),
+      field('condition', $.condition_clause),
+      field('consequence', choice($.statement, $.declaration)),
+      optional(field('alternative', $.else_clause)),
+    )),
+
+    else_clause: $ => seq('else', choice($.statement, $.declaration)),
 
     _field_declaration_list_item: ($, original) => choice(
       original,

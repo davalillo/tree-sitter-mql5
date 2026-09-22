@@ -172,7 +172,7 @@ input double InpSL = 0.02;
       value: (number_literal))))
 
 ================================================================================
-parenthesized assignment in condition (known upstream limitation)
+parenthesized assignment parses
 ================================================================================
 
 void f() {
@@ -193,13 +193,13 @@ void f() {
         condition: (condition_clause
           value: (binary_expression
             left: (parenthesized_expression
-              (ERROR
-                (identifier))
-              (call_expression
-                function: (identifier)
-                arguments: (argument_list
-                  (identifier)
-                  (identifier))))
+              (assignment_expression
+                left: (identifier)
+                right: (call_expression
+                  function: (identifier)
+                  arguments: (argument_list
+                    (identifier)
+                    (identifier)))))
             right: (number_literal)))
         consequence: (return_statement)))))
 

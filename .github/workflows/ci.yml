@@ -10,8 +10,12 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: npm ci
+      - name: Install tree-sitter CLI 0.25.x (parser is ABI 15)
+        run: npm install -g tree-sitter-cli@0.25.10
       - name: Run tests
-        run: npm test
+        run: |
+          tree-sitter test
+          tree-sitter parse examples/* --quiet --time
 
   regression:
     runs-on: ubuntu-latest
@@ -21,7 +25,7 @@ jobs:
         with:
           node-version: 18
       - name: Install tree-sitter CLI
-        run: npm install -g tree-sitter-cli@0.20.7
+        run: npm install -g tree-sitter-cli@0.25.10
       - name: Encoding self-test
         run: bash test/regression/test-encoding.sh
       - name: Real-corpus regression

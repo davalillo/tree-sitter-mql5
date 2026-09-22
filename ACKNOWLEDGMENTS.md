@@ -40,10 +40,17 @@ Attribution per contribution, with the exact source of each idea.
   scripts/build-highlights.js is a local no-network port that emits `#match?`
   alternations because tree-sitter CLI 0.20.8 ignores `#any-of?`.
 
+- **modern base migration to tree-sitter-cpp v0.23.4 + CLI 0.25 (T5)**
+  Inspirations:
+  hydralynxtrading-a11y/tree-sitter-mql5 —
+  https://github.com/hydralynxtrading-a11y/tree-sitter-mql5 (tree-sitter-cpp
+  0.23 + CLI 0.26, scanner.c C-only, 2026-09-18); m0n99/tree-sitter-mql5 —
+  https://github.com/m0n99/tree-sitter-mql5 (submodule bump + C-only scanner,
+  2026-01); MichalBPL/tree-sitter-mql5 —
+  https://github.com/MichalBPL/tree-sitter-mql5 (tree-sitter-cpp ^0.23.4 +
+  CLI ^0.25, 2026-03)
+
 ## Pending acknowledgments (tasks in odd/tasks/community-hardening.md)
 
-- T5 modern base migration —
-  hydralynxtrading-a11y/tree-sitter-mql5, m0n99/tree-sitter-mql5,
-  MichalBPL/tree-sitter-mql5 (https://github.com/MichalBPL/tree-sitter-mql5)
 - T6 napi-rs Node binding —
   khayashi4337/tree-sitter-mql5 — https://github.com/khayashi4337/tree-sitter-mql5

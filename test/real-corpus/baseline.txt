@@ -38,7 +38,7 @@
 0 test/real-corpus/mt4/Trade_Journal_CSV_Export.mq4
 0 test/real-corpus/mt4/TradingLabsID_-_ERL.mq4
 0 test/real-corpus/mt4/Volatility_Oscillator.mq4
-3 test/real-corpus/mt4/VR_Rsi_Robot.mq4
+0 test/real-corpus/mt4/VR_Rsi_Robot.mq4
 0 test/real-corpus/mt5/AurumNeuro_Vanguard.mq5
 0 test/real-corpus/mt5/Calc.mqh
 0 test/real-corpus/mt5/ClockDiagnostic.mq5
@@ -91,7 +91,7 @@
 0 test/real-corpus/mt5/MSB_Pro_ALGO_Neon_Account_Dashboard.mq5
 0 test/real-corpus/mt5/MSB_Pro_ALGO_Position_Risk_Monitor.mq5
 0 test/real-corpus/mt5/MSNR_KeyLevels_MTF_1.mq5
-2 test/real-corpus/mt5/OneClickTradeManager.mq5
+0 test/real-corpus/mt5/OneClickTradeManager.mq5
 0 test/real-corpus/mt5/PropFirmEquityProtector.mq5
 0 test/real-corpus/mt5/PulseStrike_Scalpernew_fix_6.mq5
 0 test/real-corpus/mt5/RangeCompressionPercentile.mq5
