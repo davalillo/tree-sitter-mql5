@@ -48,12 +48,12 @@ datetime start = D'2024.01.01';
 
 (translation_unit
   (declaration
-    type: (type_identifier)
+    type: (primitive_type)
     declarator: (init_declarator
       declarator: (identifier)
       value: (color_literal)))
   (declaration
-    type: (type_identifier)
+    type: (primitive_type)
     declarator: (init_declarator
       declarator: (identifier)
       value: (datetime_literal))))
@@ -139,3 +139,107 @@ class C {
             (assignment_expression
               left: (identifier)
               right: (number_literal))))))))
+
+================================================================================
+input group directive
+================================================================================
+
+input group "=== Trade Settings ==="
+input int InpLots = 1;
+input group "Risk"
+input double InpSL = 0.02;
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (input_group
+    name: (string_literal
+      (string_content)))
+  (declaration
+    (storage_class_specifier)
+    type: (primitive_type)
+    declarator: (init_declarator
+      declarator: (identifier)
+      value: (number_literal)))
+  (input_group
+    name: (string_literal
+      (string_content)))
+  (declaration
+    (storage_class_specifier)
+    type: (primitive_type)
+    declarator: (init_declarator
+      declarator: (identifier)
+      value: (number_literal))))
+
+================================================================================
+parenthesized assignment in condition (known upstream limitation)
+================================================================================
+
+void f() {
+   if ((margin = MarketInfo(_Symbol, MODE_MARGINREQUIRED)) > 0)
+      return;
+}
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (function_definition
+    type: (primitive_type)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list))
+    body: (compound_statement
+      (if_statement
+        condition: (condition_clause
+          value: (binary_expression
+            left: (parenthesized_expression
+              (ERROR
+                (identifier))
+              (call_expression
+                function: (identifier)
+                arguments: (argument_list
+                  (identifier)
+                  (identifier))))
+            right: (number_literal)))
+        consequence: (return_statement)))))
+
+================================================================================
+MQL primitive types
+================================================================================
+
+string s = "x";
+datetime t = D'2024.01.01';
+color c = C'255,0,0';
+uchar u1; ushort u2; uint u3; ulong u4;
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (declaration
+    type: (primitive_type)
+    declarator: (init_declarator
+      declarator: (identifier)
+      value: (string_literal
+        (string_content))))
+  (declaration
+    type: (primitive_type)
+    declarator: (init_declarator
+      declarator: (identifier)
+      value: (datetime_literal)))
+  (declaration
+    type: (primitive_type)
+    declarator: (init_declarator
+      declarator: (identifier)
+      value: (color_literal)))
+  (declaration
+    type: (primitive_type)
+    declarator: (identifier))
+  (declaration
+    type: (primitive_type)
+    declarator: (identifier))
+  (declaration
+    type: (primitive_type)
+    declarator: (identifier))
+  (declaration
+    type: (primitive_type)
+    declarator: (identifier)))

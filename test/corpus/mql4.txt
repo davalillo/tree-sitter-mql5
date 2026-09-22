@@ -1,0 +1,145 @@
+================================================================================
+property strict, extern and input variables
+================================================================================
+
+#property strict
+extern double Lots = 0.1;
+input int Magic = 42;
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (preproc_call
+    directive: (preproc_directive)
+    argument: (preproc_arg))
+  (declaration
+    (storage_class_specifier)
+    type: (primitive_type)
+    declarator: (init_declarator
+      declarator: (identifier)
+      value: (number_literal)))
+  (declaration
+    (storage_class_specifier)
+    type: (primitive_type)
+    declarator: (init_declarator
+      declarator: (identifier)
+      value: (number_literal))))
+
+================================================================================
+legacy event handlers and predefined variables
+================================================================================
+
+int init() { return (0); }
+int deinit() { return (0); }
+int start() {
+   double bid = Bid;
+   int total = OrdersTotal();
+   if (total == 0)
+      int ticket = OrderSend(Symbol(), OP_BUY, Lots, Ask, 3, 0, 0, "", Magic, 0, clrNONE);
+   return (total);
+}
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (function_definition
+    type: (primitive_type)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list))
+    body: (compound_statement
+      (return_statement
+        (parenthesized_expression
+          (number_literal)))))
+  (function_definition
+    type: (primitive_type)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list))
+    body: (compound_statement
+      (return_statement
+        (parenthesized_expression
+          (number_literal)))))
+  (function_definition
+    type: (primitive_type)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list))
+    body: (compound_statement
+      (declaration
+        type: (primitive_type)
+        declarator: (init_declarator
+          declarator: (identifier)
+          value: (identifier)))
+      (declaration
+        type: (primitive_type)
+        declarator: (init_declarator
+          declarator: (identifier)
+          value: (call_expression
+            function: (identifier)
+            arguments: (argument_list))))
+      (if_statement
+        condition: (condition_clause
+          value: (binary_expression
+            left: (identifier)
+            right: (number_literal)))
+        consequence: (declaration
+          type: (primitive_type)
+          declarator: (init_declarator
+            declarator: (identifier)
+            value: (call_expression
+              function: (identifier)
+              arguments: (argument_list
+                (call_expression
+                  function: (identifier)
+                  arguments: (argument_list))
+                (identifier)
+                (identifier)
+                (identifier)
+                (number_literal)
+                (number_literal)
+                (number_literal)
+                (string_literal)
+                (identifier)
+                (number_literal)
+                (identifier))))))
+      (return_statement
+        (parenthesized_expression
+          (identifier))))))
+
+================================================================================
+MQL4 declaration as if/else consequence
+================================================================================
+
+void OnTimer() {
+   if (Point == 0)
+      double x = 0;
+   else
+      double y = 1;
+}
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (function_definition
+    type: (primitive_type)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list))
+    body: (compound_statement
+      (if_statement
+        condition: (condition_clause
+          value: (binary_expression
+            left: (identifier)
+            right: (number_literal)))
+        consequence: (declaration
+          type: (primitive_type)
+          declarator: (init_declarator
+            declarator: (identifier)
+            value: (number_literal)))
+        alternative: (else_clause
+          (declaration
+            type: (primitive_type)
+            declarator: (init_declarator
+              declarator: (identifier)
+              value: (number_literal))))))))
