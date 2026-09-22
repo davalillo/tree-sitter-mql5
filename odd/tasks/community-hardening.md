@@ -59,7 +59,15 @@ inspirado/copiado exige atribución: ver T6.
       catálogos (si no es reutilizable, regenerar desde la documentación
       oficial de MQL5 citando la inspiración estructural). Valor extra:
       clasificación semántica de builtins para el extractor de gortex.
-      Status: pendiente
+      Status: COMPLETADA — catálogos vendidos (ISC,
+      queries/mql5-{constants,functions}.json) + generador
+      scripts/build-highlights.js (bloques #any-of? idempotentes entre
+      marcadores) + queries/highlights.scm generado + npm run
+      build:highlights. Nota: CLI 0.20.8 ignora #any-of? (lo trata como
+      siempre-verdadero), así que los bloques usan #match? con alternación
+      anclada ^(...)$ (fallback previsto por el criterio de la tarea). Extra:
+      predefinidas _* capturadas a mano (ausentes del catálogo upstream).
+      Commit 73f6365
 
 - [ ] T5 Migración de base: tree-sitter-cpp moderno + CLI moderna (P2 heredado)
       Inspirations (tres referencias independientes que ya lo hicieron):
