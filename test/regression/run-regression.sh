@@ -2,8 +2,9 @@
 # Real-code regression harness.
 #
 # Parses every file under test/real-corpus/ with `tree-sitter parse` and
-# compares the number of `(ERROR` nodes per file against the recorded baseline
-# (test/real-corpus/baseline.txt).
+# compares the number of `(ERROR` and `(MISSING` nodes per file against the
+# recorded baseline (test/real-corpus/baseline.txt). MISSING nodes are silent
+# failures, so they are counted alongside ERROR nodes.
 #
 # Usage:
 #   bash test/regression/run-regression.sh            # check mode (default)
@@ -45,7 +46,7 @@ total_files=0
 
 # Parse every corpus file (sorted for deterministic output) and count ERROR nodes.
 while IFS= read -r -d '' f; do
-  count="$(tree-sitter parse "$f" 2>/dev/null | grep -c '(ERROR' || true)"
+  count="$(tree-sitter parse "$f" 2>/dev/null | grep -c -E '\((ERROR|MISSING)' || true)"
   total_files=$((total_files + 1))
   total_errors=$((total_errors + count))
   if [[ "$count" -gt 0 ]]; then
@@ -57,7 +58,7 @@ done < <(find "$CORPUS_DIR" -type f -name '*.mq*' -print0 | sort -z)
 if [[ "$UPDATE_MODE" -eq 1 ]]; then
   cp "$results_file" "$BASELINE"
   echo "Baseline updated: $BASELINE"
-  echo "Summary: $total_files files, $files_with_errors with errors, $total_errors total ERROR nodes"
+  echo "Summary: $total_files files, $files_with_errors with errors, $total_errors total ERROR/MISSING nodes"
   exit 0
 fi
 
@@ -85,7 +86,7 @@ while IFS= read -r line; do
   fi
 done <"$results_file"
 
-echo "Summary: $total_files files, $files_with_errors with errors, $total_errors total ERROR nodes"
+echo "Summary: $total_files files, $files_with_errors with errors, $total_errors total ERROR/MISSING nodes"
 
 status=0
 if [[ "${#regressions[@]}" -gt 0 || "$missing_from_baseline" -gt 0 ]]; then
