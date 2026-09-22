@@ -33,3 +33,23 @@ entries and replaces the corpus. Because the upstream listing changes over
 time, a refresh intentionally changes the fixture set: after refreshing, review
 the diff, then re-baseline deliberately with
 `bash test/regression/run-regression.sh --update`.
+
+## Encodings
+
+MetaEditor commonly writes MQL sources as UTF-16LE, with or without a BOM.
+The corpus tooling handles this:
+
+- `test/regression/download-corpus.sh` detects the encoding of each file at
+  copy time and normalizes UTF-16 variants to UTF-8 on ingest, so the corpus
+  never stores UTF-16 (`normalized <encoding>: <file>` notes go to stdout).
+- `test/regression/run-regression.sh` detects the encoding per file and, for
+  UTF-16 variants, transcodes to UTF-8 on the fly (into a temp file) before
+  parsing (`transcoded: <file> (<encoding>)` notices go to stderr only; the
+  baseline format is unchanged).
+
+Detection and transcoding helpers live in
+`test/regression/lib-encoding.sh`, with a self-test in
+`test/regression/test-encoding.sh` (also run by the CI `regression` job).
+
+Corpus encoding audit (2026-09-22): 111 files = 99 UTF-8 with BOM +
+12 plain UTF-8 + 0 UTF-16.

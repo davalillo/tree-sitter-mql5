@@ -22,6 +22,8 @@ jobs:
           node-version: 18
       - name: Install tree-sitter CLI
         run: npm install -g tree-sitter-cli@0.20.7
+      - name: Encoding self-test
+        run: bash test/regression/test-encoding.sh
       - name: Real-corpus regression
         run: bash test/regression/run-regression.sh
 

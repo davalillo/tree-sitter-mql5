@@ -17,9 +17,17 @@
 #
 # NOTE: after refreshing the corpus with download-corpus.sh, re-baseline
 # deliberately with `--update` after manual review of the new fixture set.
+#
+# Encoding handling: MetaEditor commonly writes UTF-16LE (with or without
+# BOM). Files detected as UTF-16 are transcoded to UTF-8 on the fly (via
+# lib-encoding.sh) into a temp file before parsing; the baseline format is
+# unchanged and all encoding notices go to stderr only.
 set -euo pipefail
 
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+# shellcheck source=lib-encoding.sh
+source "$SCRIPT_DIR/lib-encoding.sh"
 cd "$REPO_ROOT"
 
 CORPUS_DIR="test/real-corpus"
@@ -38,15 +46,29 @@ if ! command -v tree-sitter >/dev/null 2>&1; then
 fi
 
 results_file="$(mktemp)"
-trap 'rm -f "$results_file"' EXIT
+transcode_tmp="$(mktemp)"
+trap 'rm -f "$results_file" "$transcode_tmp"' EXIT
 
 total_errors=0
 files_with_errors=0
 total_files=0
 
 # Parse every corpus file (sorted for deterministic output) and count ERROR nodes.
+# UTF-16 files are transcoded to UTF-8 into a temp file before parsing (the
+# tree-sitter CLI cannot read UTF-16); the notice goes to stderr only.
 while IFS= read -r -d '' f; do
-  count="$(tree-sitter parse "$f" 2>/dev/null | grep -c -E '\((ERROR|MISSING)' || true)"
+  enc="$(detect_encoding "$f")"
+  case "$enc" in
+    utf16le | utf16le_nobom | utf16be)
+      transcode_to_utf8 "$f" >"$transcode_tmp"
+      target="$transcode_tmp"
+      echo "transcoded: $f ($enc)" >&2
+      ;;
+    *)
+      target="$f"
+      ;;
+  esac
+  count="$(tree-sitter parse "$target" 2>/dev/null | grep -c -E '\((ERROR|MISSING)' || true)"
   total_files=$((total_files + 1))
   total_errors=$((total_errors + count))
   if [[ "$count" -gt 0 ]]; then

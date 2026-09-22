@@ -25,6 +25,11 @@ Attribution per contribution, with the exact source of each idea.
   https://github.com/hydralynxtrading-a11y/tree-sitter-mql5 (sweep.ps1 treats
   ERROR and MISSING alike, 2026-09-18)
 
+- **UTF-16LE handling in the regression harness**
+  Inspiration: hydralynxtrading-a11y/tree-sitter-mql5 —
+  https://github.com/hydralynxtrading-a11y/tree-sitter-mql5 (sweep.ps1 encoding
+  detection, 2026-09-18)
+
 ## Pending acknowledgments (tasks in odd/tasks/community-hardening.md)
 
 - T4 MQL builtin catalogs + generated highlight queries —
