@@ -19,7 +19,8 @@ inspirado/copiado exige atribución: ver T6.
       (grammar.js, reglas `export_specifier` y `_function_postfix`, push 2026-09-18)
       Criterio: regla de 2 líneas + corpus test con `void f() export {}`;
       verificar que `export` como identificador sigue parseando (sonda);
-      suite verde. Status: pendiente
+      suite verde. Status: COMPLETADA — hook `_function_declarator_seq`
+      (no existe _function_postfix en el base fijado); commit 0c17959
 
 - [ ] T2 `input_group` con `;` opcional + test de `group` como identificador
       Inspiration: hydralynxtrading-a11y/tree-sitter-mql5
@@ -28,7 +29,9 @@ inspirado/copiado exige atribución: ver T6.
       reserved word")
       Criterio: sondea `input group "x";` (si da ERROR, añadir `optional(";")`
       + corpus test); añadir corpus test de `int group = 5;` como tripwire
-      (verificado a mano el 2026-09-21: 0 ERROR). Status: pendiente
+      (verificado a mano el 2026-09-21: 0 ERROR). Status: COMPLETADA —
+      `;` producía MISSING type_identifier; commit 0c17959. Extra: harness
+      cuenta MISSING (commit separado)
 
 - [ ] T3 Manejo de encodings en el harness de regresión (UTF-16LE de MetaEditor)
       Inspiration: hydralynxtrading-a11y/tree-sitter-mql5
@@ -86,7 +89,8 @@ inspirado/copiado exige atribución: ver T6.
       repo de origen con URL, commit/fecha, y qué se tomó (idea vs. código);
       incluir también mskelton/tree-sitter-mql5 (base ISC) y los PRs #14/#15
       enviados upstream. Actualizarlo al cerrar cada tarea de este documento.
-      Status: pendiente
+      Status: INICIADO — ACKNOWLEDGMENTS.md creado (base + T1/T2/T3 +
+      pendientes T4-T6); nota: PRs #14/#15 resultaron MERGED upstream.
 
 ## Notas
 
