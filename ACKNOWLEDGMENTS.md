@@ -14,21 +14,28 @@ Attribution per contribution, with the exact source of each idea.
 
 - **export_specifier** (`void f() export { }`)
   Inspiration: hydralynxtrading-a11y/tree-sitter-mql5 —
-  https://github.com/hydralynxtrading-a11y/tree-sitter-mql5 (grammar.js, 2026-09-18)
+  https://github.com/hydralynxtrading-a11y/tree-sitter-mql5 (grammar.js, 2026-09-18).
+  Taken: idea only — our own `_function_declarator_seq` hook (the pinned base
+  had no `_function_postfix`). Adoption commit 0c17959.
 
 - **input_group optional trailing semicolon**
   Inspiration: hydralynxtrading-a11y/tree-sitter-mql5 —
-  https://github.com/hydralynxtrading-a11y/tree-sitter-mql5 (grammar.js, 2026-09-18)
+  https://github.com/hydralynxtrading-a11y/tree-sitter-mql5 (grammar.js, 2026-09-18).
+  Taken: idea only — real corpus showed the `;` produced MISSING nodes.
+  Adoption commit 0c17959.
 
 - **MISSING-node counting in the regression harness**
   Inspiration: hydralynxtrading-a11y/tree-sitter-mql5 —
   https://github.com/hydralynxtrading-a11y/tree-sitter-mql5 (sweep.ps1 treats
-  ERROR and MISSING alike, 2026-09-18)
+  ERROR and MISSING alike, 2026-09-18).
+  Taken: idea only — our bash harness counts both. Adoption commit b747377.
 
 - **UTF-16LE handling in the regression harness**
   Inspiration: hydralynxtrading-a11y/tree-sitter-mql5 —
   https://github.com/hydralynxtrading-a11y/tree-sitter-mql5 (sweep.ps1 encoding
-  detection, 2026-09-18)
+  detection, 2026-09-18).
+  Taken: idea only — our own detect/transcode library (lib-encoding.sh) and
+  ingest normalization. Adoption commit db36b09.
 
 - **MQL builtin catalogs + generated highlight queries** (T4)
   Inspiration: m0n99/tree-sitter-mql5 —
@@ -38,7 +45,8 @@ Attribution per contribution, with the exact source of each idea.
   mql5.com documentation). Taken: the catalogs verbatim (see
   queries/CATALOGS.md) and the marker-based block regeneration idea; our
   scripts/build-highlights.js is a local no-network port that emits `#match?`
-  alternations because tree-sitter CLI 0.20.8 ignores `#any-of?`.
+  alternations (initially because CLI 0.20.8 ignored `#any-of?`; kept after
+  the CLI migration for consistency). Adoption commit 73f6365.
 
 - **modern base migration to tree-sitter-cpp v0.23.4 + CLI 0.25 (T5)**
   Inspirations:
@@ -48,7 +56,10 @@ Attribution per contribution, with the exact source of each idea.
   https://github.com/m0n99/tree-sitter-mql5 (submodule bump + C-only scanner,
   2026-01); MichalBPL/tree-sitter-mql5 —
   https://github.com/MichalBPL/tree-sitter-mql5 (tree-sitter-cpp ^0.23.4 +
-  CLI ^0.25, 2026-03)
+  CLI ^0.25, 2026-03). Taken: roadmap validation only — three independent
+  references confirming the target versions and the C-only scanner approach;
+  the migration itself (grammar adaptations, scanner rename, bindings) is our
+  own work. Adoption commit f544042.
 
 ## Pending acknowledgments (tasks in odd/tasks/community-hardening.md)
 

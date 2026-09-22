@@ -101,8 +101,11 @@ inspirado/copiado exige atribución: ver T6.
       repo de origen con URL, commit/fecha, y qué se tomó (idea vs. código);
       incluir también mskelton/tree-sitter-mql5 (base ISC) y los PRs #14/#15
       enviados upstream. Actualizarlo al cerrar cada tarea de este documento.
-      Status: INICIADO — ACKNOWLEDGMENTS.md creado (base + T1/T2/T3 +
-      pendientes T4-T6); nota: PRs #14/#15 resultaron MERGED upstream.
+      Status: COMPLETADA — ACKNOWLEDGMENTS.md auditorado contra el criterio:
+      cada contribución con concepto, repo+URL, fecha, "Taken: idea vs. código"
+      y commit de adopción (0c17959, b747377, db36b09, 73f6365, f544042);
+      base mskelton (ISC) + PRs #14/#15 merged en Foundation; T6 queda en
+      pending hasta decidir publicación npm.
 
 ## Notas
 
