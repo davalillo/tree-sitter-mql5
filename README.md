@@ -30,6 +30,23 @@ class):
 
 The grammar targets MQL4, MQL5 and MQH (`.mq4`, `.mq5`, `.mqh`).
 
+## Generated builtin queries
+
+`queries/highlights.scm` contains two generated blocks (between explicit
+`; BEGIN/END BUILTIN …` markers) that highlight MQL5 builtin constants
+(`INIT_SUCCEEDED`, `MODE_EMA`, …) and functions (`Print`, `iRSI`, …) as
+`@constant.builtin` / `@function.builtin`. They are regenerated from the
+vendored catalogs in `queries/mql5-{constants,functions}.json` (provenance:
+[queries/CATALOGS.md](queries/CATALOGS.md)):
+
+```
+npm run build:highlights   # run twice; the second run must be a no-op
+```
+
+The catalogs are vendored from [m0n99/tree-sitter-mql5](https://github.com/m0n99/tree-sitter-mql5)
+(ISC) and are regenerable; their contents ultimately derive from the official
+mql5.com documentation. Do not edit the generated blocks by hand.
+
 ## Go usage
 
 ```go

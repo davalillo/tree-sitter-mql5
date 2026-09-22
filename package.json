@@ -14,6 +14,7 @@
   "license": "ISC",
   "scripts": {
     "generate": "tree-sitter generate",
+    "build:highlights": "node scripts/build-highlights.js",
     "test": "tree-sitter test && tree-sitter parse examples/* --quiet --time",
     "regression": "bash test/regression/run-regression.sh",
     "regression:corpus": "bash test/regression/download-corpus.sh"

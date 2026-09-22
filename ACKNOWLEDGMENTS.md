@@ -30,10 +30,18 @@ Attribution per contribution, with the exact source of each idea.
   https://github.com/hydralynxtrading-a11y/tree-sitter-mql5 (sweep.ps1 encoding
   detection, 2026-09-18)
 
+- **MQL builtin catalogs + generated highlight queries** (T4)
+  Inspiration: m0n99/tree-sitter-mql5 —
+  https://github.com/m0n99/tree-sitter-mql5 (build-highlights.js generator
+  technique + vendored catalogs queries/mql5/{mql5_constants,mql5_functions}.json,
+  ISC, main branch 2026-01; catalog data ultimately derived from the official
+  mql5.com documentation). Taken: the catalogs verbatim (see
+  queries/CATALOGS.md) and the marker-based block regeneration idea; our
+  scripts/build-highlights.js is a local no-network port that emits `#match?`
+  alternations because tree-sitter CLI 0.20.8 ignores `#any-of?`.
+
 ## Pending acknowledgments (tasks in odd/tasks/community-hardening.md)
 
-- T4 MQL builtin catalogs + generated highlight queries —
-  m0n99/tree-sitter-mql5 — https://github.com/m0n99/tree-sitter-mql5
 - T5 modern base migration —
   hydralynxtrading-a11y/tree-sitter-mql5, m0n99/tree-sitter-mql5,
   MichalBPL/tree-sitter-mql5 (https://github.com/MichalBPL/tree-sitter-mql5)
