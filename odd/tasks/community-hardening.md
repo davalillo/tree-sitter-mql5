@@ -41,7 +41,11 @@ inspirado/copiado exige atribución: ver T6.
       Criterio: run-regression.sh detecta encoding por fichero; UTF-16LE se
       transcodifica (o se reporta explícitamente) antes de parsear; auditoría
       del corpus actual (111 ficheros) y del download-corpus.sh; corpus test
-      con un fichero UTF-16LE sintético. Status: pendiente
+      con un fichero UTF-16LE sintético. Status: COMPLETADA — lib-encoding.sh
+      (detect/transcode), run-regression.sh transcodifica en vuelo,
+      download-corpus.sh normaliza a UTF-8 en ingest, test-encoding.sh
+      self-test + CI step; auditoría corpus 2026-09-22: 111 ficheros (99 UTF-8
+      BOM, 12 UTF-8 sin BOM, 0 UTF-16). Commit db36b09
 
 - [ ] T4 Catálogos de builtins MQL (constantes/funciones) + queries generadas
       Inspiration: m0n99/tree-sitter-mql5
