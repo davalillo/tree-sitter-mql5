@@ -2,33 +2,31 @@ name: Update Dependencies
 on:
   schedule:
     - cron: "0 6 * * MON" # every monday at midnight
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
-      - name: Update CPP parser
-        run: npm update tree-sitter-cpp tree-sitter-c
+          node-version: 20
       - name: Install dependencies
         run: npm ci
+      - name: Update CPP parser
+        run: npm update tree-sitter-cpp
       - name: Regenerate Source Files
         run: npm run generate
-      - name: Generate parser
+      - name: Install parser sources (node-gyp)
         run: npm install
       - name: Run tests
         run: |
-          git submodule init
-          git submodule update
-          cd tree-sitter-cpp && git checkout origin/master && cd ..
+          git submodule update --init
           cp tree-sitter-cpp/test/corpus/* test/corpus
           npm test
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v7
         with:
-          base: ${{ github.head_ref }}
           body: Update dependencies and regenerate CPP parser
           branch: update-cpp-parser
           commit-message: Update dependencies and regenerate CPP parser
