@@ -3,6 +3,9 @@ on:
   schedule:
     - cron: "0 6 * * MON" # every monday at midnight
   workflow_dispatch:
+permissions:
+  contents: write # push the update-cpp-parser branch
+  pull-requests: write # create the pull request
 jobs:
   build:
     runs-on: ubuntu-latest
